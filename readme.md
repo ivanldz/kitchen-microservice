@@ -1,24 +1,16 @@
 # Kitchen microservice
 
-Este servicio es uno de tres microservicios, implementados con el fin de desarrollar la solucion para el reto tecnico de Alegra.
+Part of a challenge involving the creation of 3 microservices responsible for managing a culinary API. These microservices collectively handle order management and its states, inventory management, and frontend interaction. This microservice, specifically, is responsible for orders management.
 
-# Responsabilidad
+## About the Project
 
-Este servicio se encarga de la gestión de pedidos, incluyendo el seguimiento de los cambios de estado de cada pedido y las validaciones necesarias para permitir la transición de un estado a otro. Además, proporciona funcionalidades para obtener un listado de pedidos con la capacidad de filtrarlos por estado, así como también para obtener un listado de recetas.
+The project is structured following the Clean Architecture pattern, which is a software design approach that aims to create highly independent, decoupled, and layered systems, facilitating code understanding, maintenance, and evolution.
 
-# Sobre el proyecto
+### Folder Structure
 
-El proyecto esta estructurado siguiendo el patron de arquitectura limpia, el cual, es un enfoque de diseño de software que busca crear sistemas altamente independientes, desacoplados y divididos en capas, lo que facilita la comprensión, el mantenimiento y la evolución del código.
-
-### Estructura de carpetas
-
-- Dominio: Politicas del sistema. Aqui se declaran las entidades y repositorios que existiran en la aplicacion
-- Aplication: Logica empresarial del sistema. Son todos los casos de uso de la aplicacion
-- Infrastructura: Todo lo ageno a la logica de negocios central de nuestra aplicacion. Conexion y configuracion de la base de datos; implementacion real de los elementos del dominio y uso de los servicios de aplicacion inyectando estas nuevas implementaciones.
-
-
-
-
+- Domain: System policies. Entities and repositories that will exist in the application are declared here.
+- Application: Business logic of the system. Houses all the use cases of the application.
+- Infrastructure: Everything outside the central business logic of our application. Connection and configuration of the database; real implementation of domain elements and use of application services by injecting these new implementations.
 
 ## API Reference
 
@@ -28,18 +20,18 @@ El proyecto esta estructurado siguiendo el patron de arquitectura limpia, el cua
   POST /api/order
 ```
 
+- **Response**:
+  | Type | Description|
+  :------- | :------------ |
+  | `Order` |Order generated with `queued` status. |
 
-- __Response__: 
-| Type     | Description| 
-:------- | :------------ |
-| `Order` |Orden generada en estado `queued` |
+- **Ejemplo**
 
-- __Ejemplo__
 ```json
 {
-	"status": "queued",
-	"recipe": "646ec8181c2d7519cc8c1892",
-	"_id": "6470e5ca5334b8c2122c0908"
+  "status": "queued",
+  "recipe": "646ec8181c2d7519cc8c1892",
+  "_id": "6470e5ca5334b8c2122c0908"
 }
 ```
 
@@ -49,23 +41,18 @@ El proyecto esta estructurado siguiendo el patron de arquitectura limpia, el cua
   GET api/order/${page}
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `page`      | `number` | **Required**. page |
+| Parameter | Type     | Description        |
+| :-------- | :------- | :----------------- |
+| `page`    | `number` | **Required**. page |
 
+| Query    | Type     | Description                                                            |
+| :------- | :------- | :--------------------------------------------------------------------- |
+| `status` | `string` | **optional**. Comma-separated order statuses (status=preparing,queued) |
 
-| Query | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `status`      | `string` | **optional**. estados de ordenes separados por coma (status=preparing,queued) |
-
-
-
-- __Response__: 
-| Type     | Description| 
-:------- | :------------ |
-| `Page` | Responde una pagina de ordenes |
-
-
+- **Response**:
+  | Type | Description|
+  :------- | :------------ |
+  | `Page` | Responds with a page of orders. |
 
 #### Get recipes
 
@@ -73,14 +60,14 @@ El proyecto esta estructurado siguiendo el patron de arquitectura limpia, el cua
   GET /api/recipe/${page}
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `page`      | `number` | **Required**. page |
+| Parameter | Type     | Description        |
+| :-------- | :------- | :----------------- |
+| `page`    | `number` | **Required**. page |
 
-- __Response__: 
-| Type     | Description| 
-:------- | :------------ |
-| `Page` | Responde una pagina de ingredientes|
+- **Response**:
+  | Type | Description|
+  :------- | :------------ |
+  | `Page` | Responds with a page of recipes.|
 
 #### Prepare order
 
@@ -88,15 +75,14 @@ El proyecto esta estructurado siguiendo el patron de arquitectura limpia, el cua
   PUT /api/order/prepare
 ```
 
-| Body | Type     | Description                       |
+| Body      | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `orderId`      | `string` | **Required**. Id de pedido a preparar |
+| `orderId` | `string` | **Required**. Order ID to prepare |
 
-- __Response__: 
-| Type     | Description| 
-:------- | :------------ |
-| `Order` | Orden con el cambio|
-
+- **Response**:
+  | Type | Description|
+  :------- | :------------ |
+  | `Order` | Order with the change.|
 
 #### Prepare order
 
@@ -104,29 +90,23 @@ El proyecto esta estructurado siguiendo el patron de arquitectura limpia, el cua
   PUT /api/order/finish
 ```
 
-| Body | Type     | Description                       |
+| Body      | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
-| `orderId`      | `string` | **Required**. Id de pedido a finalizar |
+| `orderId` | `string` | **Required**. Order ID to finish. |
 
-- __Response__: 
-| Type     | Description| 
-:------- | :------------ |
-| `Order` | Orden con el cambio|
-
-
-
+- **Response**:
+  | Type | Description|
+  :------- | :------------ |
+  | `Order` | Order with the change.|
 
 ## Usage
 
-Puede usar el Dockerfile presente en la raiz del proyecto para levantar la aplicacion o puede usar docker-compose.yaml para levantar la app junto a un servicio de mongoose
+You can use the Dockerfile in the root of the project to run the application, or you can use the docker-compose.yaml to run the app along with a mongoose service.
 
-Tambien puede instalar todo local utilizando
+You can also install everything locally using:
+
 ```bash
   yarn install
   yarn dev
 ```
 
-
-## Deploy
-
-El servicio se encuentra en [render](https://render.com/) que provee un hosting gratuito a partir de una imagen de docker y la base de datos es la capa gratuita de [MongoDB Atlas](https://www.mongodb.com/atlas/database)
